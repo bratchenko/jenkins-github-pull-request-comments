@@ -5,8 +5,7 @@ the [GitHub Commit Status API](http://developer.github.com/v3/repos/statuses/)
 
 Аdding a new pull request or new commit to an existing pull request will start a new
 build.
-
-For more details, see https://wiki.jenkins-ci.org/display/JENKINS/GitHub+pull+request+builder+plugin
+Looks for an output text in a specific location (provided via $ghprbOutputFile environment variable) and posts contents of that file as a comment to pull request. If pull request is updated with new commits, this plugin updates existing comment if output file is different.
 
 ### Required Jenkins Plugins:
 * github-api plugin (https://wiki.jenkins-ci.org/display/JENKINS/GitHub+API+Plugin)
