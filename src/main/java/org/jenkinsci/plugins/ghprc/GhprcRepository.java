@@ -101,7 +101,7 @@ public class GhprcRepository {
         }
 
         if (helper.isProjectDisabled()) {
-            logger.log(Level.FINE, "Project is disabled, not checking github state");
+            logger.log(Level.INFO, "Project is disabled, not checking github state");
             return;
         }
 
@@ -219,7 +219,7 @@ public class GhprcRepository {
         commentStr = commentStr + MD5_SIGNATURE_PREFIX + md5;
         if (myComment == null) {
             pullRequest.comment(commentStr);
-            logger.log(Level.FINE, "Posted new comment");
+            logger.log(Level.INFO, "Posted new comment");
         } else {
 
             Matcher matcher = MD5_SIGNATURE_PATTERN.matcher(myComment.getBody());
@@ -232,9 +232,9 @@ public class GhprcRepository {
             boolean changed = prevMd5 == null || !md5.equals(prevMd5);
             if (changed) {
                 myComment.update(commentStr);
-                logger.log(Level.FINE, "Updated comment body");
+                logger.log(Level.INFO, "Updated comment body");
             } else {
-                logger.log(Level.FINE, "Comment body has not changed");
+                logger.log(Level.INFO, "Comment body has not changed");
             }
         }
     }
@@ -293,7 +293,7 @@ public class GhprcRepository {
         if ("closed".equals(pr.getAction())) {
             pulls.remove(pr.getNumber());
         } else if (helper.isProjectDisabled()) {
-            logger.log(Level.FINE, "Not processing Pull request since the build is disabled");
+            logger.log(Level.INFO, "Not processing Pull request since the build is disabled");
         } else if ("opened".equals(pr.getAction()) || "reopened".equals(pr.getAction())) {
             GhprcPullRequest pull = pulls.get(pr.getNumber());
             if (pull == null) {

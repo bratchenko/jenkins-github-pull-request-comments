@@ -97,7 +97,7 @@ public class GhprcWebHook {
     private boolean matchRepo(GhprcRepository ghprcRepo, GHRepository ghRepo) {
         String jobRepoName = ghprcRepo.getName();
         String hookRepoName = ghRepo.getFullName();
-        logger.log(Level.FINE, "Comparing repository names: {0} to {1}, case is ignored", new Object[]{jobRepoName, hookRepoName});
+        logger.log(Level.INFO, "Comparing repository names: {0} to {1}, case is ignored", new Object[]{jobRepoName, hookRepoName});
         return jobRepoName.equalsIgnoreCase(hookRepoName);
     }
 

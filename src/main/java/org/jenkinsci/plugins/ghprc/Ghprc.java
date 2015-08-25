@@ -275,7 +275,7 @@ public class Ghprc {
         if (context != null) {
             contextName = context.getFullName();
         }
-        logger.log(Level.FINE, "Looking up credentials for {0}, using context {1} for url {2}", new Object[] { credentialId, contextName, uri });
+        logger.log(Level.INFO, "Looking up credentials for {0}, using context {1} for url {2}", new Object[] { credentialId, contextName, uri });
         
         List<StandardCredentials> credentials;
         
@@ -287,7 +287,7 @@ public class Ghprc {
                     URIRequirementBuilder.fromUri(uri).build());
         }
         
-        logger.log(Level.FINE, "Found {0} credentials", new Object[]{credentials.size()});
+        logger.log(Level.INFO, "Found {0} credentials", new Object[]{credentials.size()});
         
         return (credentialId == null) ? null : CredentialsMatchers.firstOrNull(credentials,
                     CredentialsMatchers.withId(credentialId));

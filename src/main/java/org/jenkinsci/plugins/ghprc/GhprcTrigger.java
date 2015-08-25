@@ -133,7 +133,7 @@ public class GhprcTrigger extends GhprcTriggerBackwardsCompatible {
         this.project = project.getFullName();
         
         if (project.isDisabled()) {
-            logger.log(Level.FINE, "Project is disabled, not starting trigger for job " + this.project);
+            logger.log(Level.INFO, "Project is disabled, not starting trigger for job " + this.project);
             return;
         }
         if (project.getProperty(GithubProjectProperty.class) == null) {
@@ -170,12 +170,12 @@ public class GhprcTrigger extends GhprcTriggerBackwardsCompatible {
     public void run() {
         // triggers are always triggered on the cron, but we just no-op if we are using GitHub hooks.
         if (getUseGitHubHooks()) {
-            logger.log(Level.FINE, "Use webHooks is set, so not running trigger");
+            logger.log(Level.INFO, "Use webHooks is set, so not running trigger");
             return;
         }
 
         if ((helper != null && helper.isProjectDisabled()) || (_project != null && _project.isDisabled())) {
-            logger.log(Level.FINE, "Project is disabled, ignoring trigger run call for job {0}", this.project);
+            logger.log(Level.INFO, "Project is disabled, ignoring trigger run call for job {0}", this.project);
             return;
         }
         
@@ -185,7 +185,7 @@ public class GhprcTrigger extends GhprcTriggerBackwardsCompatible {
         }
 
         
-        logger.log(Level.FINE, "Running trigger for {0}", project);
+        logger.log(Level.INFO, "Running trigger for {0}", project);
         
         helper.run();
         getDescriptor().save();

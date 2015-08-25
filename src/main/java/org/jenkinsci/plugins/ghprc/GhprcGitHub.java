@@ -28,7 +28,7 @@ public class GhprcGitHub {
         try {
             GHOrganization org = get().getOrganization(organisation);
             orgHasMember = org.hasMember(member);
-            logger.log(Level.FINE, "org.hasMember(member)? user:{0} org: {1} == {2}", 
+            logger.log(Level.INFO, "org.hasMember(member)? user:{0} org: {1} == {2}",
                     new Object[] { member.getLogin(), organisation, orgHasMember ? "yes" : "no" });
 
         } catch (IOException ex) {

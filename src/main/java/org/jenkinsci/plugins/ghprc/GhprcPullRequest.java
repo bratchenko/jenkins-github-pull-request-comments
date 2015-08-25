@@ -83,7 +83,7 @@ public class GhprcPullRequest {
      */
     public void check(GHPullRequest pr) {
         if (helper.isProjectDisabled()) {
-            logger.log(Level.FINE, "Project is disabled, ignoring pull request");
+            logger.log(Level.INFO, "Project is disabled, ignoring pull request");
             return;
         }
         if (target == null) {
@@ -106,6 +106,7 @@ public class GhprcPullRequest {
             // the title could have been updated since the original PR was opened
             title = pr.getTitle();
             boolean newCommit = checkCommit(pr.getHead().getSha());
+            shouldRun = true;
 
             if (!newCommit) {
                 logger.log(Level.INFO, "Pull request #{0} was updated on repo {1} but there aren''t any new comments nor commits; "
@@ -135,20 +136,20 @@ public class GhprcPullRequest {
 
     private void tryBuild(GHPullRequest pr) {
         if (helper.isProjectDisabled()) {
-            logger.log(Level.FINEST, "Project is disabled, not trying to build");
+            logger.log(Level.INFO, "Project is disabled, not trying to build");
             shouldRun = false;
         }
         if (shouldRun) {
-            logger.log(Level.FINEST, "Running the build");
+            logger.log(Level.INFO, "Running the build");
 
             if (authorEmail == null) {
                 // If this instance was create before authorEmail was introduced (before v1.10), it can be null.
                 obtainAuthorEmail(pr);
-                logger.log(Level.FINEST, "Author email was not set, trying to set it to {0}", authorEmail);
+                logger.log(Level.INFO, "Author email was not set, trying to set it to {0}", authorEmail);
             }
 
             if (pr != null) {
-                logger.log(Level.FINEST, "PR is not null, checking if mergable");
+                logger.log(Level.INFO, "PR is not null, checking if mergable");
                 checkMergeable(pr);
                 try {
                     for (GHPullRequestCommitDetail commitDetails : pr.listCommits()) {
@@ -163,7 +164,7 @@ public class GhprcPullRequest {
 
             }
 
-            logger.log(Level.FINEST, "Running build...");
+            logger.log(Level.INFO, "Running build...");
             build();
 
             shouldRun = false;
@@ -179,7 +180,7 @@ public class GhprcPullRequest {
         if (head.equals(sha)) {
             return false;
         }
-        logger.log(Level.FINE, "New commit. Sha: {0} => {1}", new Object[] { head, sha });
+        logger.log(Level.INFO, "New commit. Sha: {0} => {1}", new Object[] { head, sha });
         head = sha;
         if (accepted) {
             shouldRun = true;

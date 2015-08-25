@@ -119,11 +119,11 @@ public class GhprcGitHubAuth extends AbstractDescribableImpl<GhprcGitHubAuth> {
             logger.log(Level.SEVERE, "Failed to look up credentials for context {0} using id: {1}",
                     new Object[] { contextName, credentialsId });
         } else if (credentials instanceof StandardUsernamePasswordCredentials) {
-            logger.log(Level.FINEST, "Using username/password for context {0}", contextName);
+            logger.log(Level.INFO, "Using username/password for context {0}", contextName);
             StandardUsernamePasswordCredentials upCredentials = (StandardUsernamePasswordCredentials) credentials;
             builder.withPassword(upCredentials.getUsername(), upCredentials.getPassword().getPlainText());
         } else if (credentials instanceof StringCredentials) {
-            logger.log(Level.FINEST, "Using OAuth token for context {0}", contextName);
+            logger.log(Level.INFO, "Using OAuth token for context {0}", contextName);
             StringCredentials tokenCredentials = (StringCredentials) credentials;
             builder.withOAuthToken(tokenCredentials.getSecret().getPlainText());
         } else {
