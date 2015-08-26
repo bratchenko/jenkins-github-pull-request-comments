@@ -35,9 +35,6 @@ public class GhprcPullRequest {
 
     private GitUser commitAuthor;
 
-    private boolean shouldRun = false;
-    private boolean accepted = false;
-
     private transient Ghprc helper;
     private transient GhprcRepository repo;
 
@@ -101,12 +98,10 @@ public class GhprcPullRequest {
     private void updatePR(GHPullRequest pr, GHUser author) {
         if (pr != null && isUpdated(pr)) {
             logger.log(Level.INFO, "Pull request #{0} was updated on {1} at {2} by {3}", new Object[] { id, reponame, updated, author });
-            accepted = true;
 
             // the title could have been updated since the original PR was opened
             title = pr.getTitle();
             boolean newCommit = checkCommit(pr.getHead().getSha());
-            shouldRun = true;
 
             if (!newCommit) {
                 logger.log(Level.INFO, "Pull request #{0} was updated on repo {1} but there aren''t any new comments nor commits; "
@@ -130,45 +125,41 @@ public class GhprcPullRequest {
         } catch (Exception e) {
             logger.log(Level.WARNING, "Unable to update last updated date", e);
         }
-        ret = ret || !pr.getHead().getSha().equals(head);
-        return ret;
+        return ret || !pr.getHead().getSha().equals(head);
     }
 
     private void tryBuild(GHPullRequest pr) {
         if (helper.isProjectDisabled()) {
             logger.log(Level.INFO, "Project is disabled, not trying to build");
-            shouldRun = false;
+            return;
         }
-        if (shouldRun) {
-            logger.log(Level.INFO, "Running the build");
+        logger.log(Level.INFO, "Running the build");
 
-            if (authorEmail == null) {
-                // If this instance was create before authorEmail was introduced (before v1.10), it can be null.
-                obtainAuthorEmail(pr);
-                logger.log(Level.INFO, "Author email was not set, trying to set it to {0}", authorEmail);
-            }
+        if (authorEmail == null) {
+            // If this instance was create before authorEmail was introduced (before v1.10), it can be null.
+            obtainAuthorEmail(pr);
+            logger.log(Level.INFO, "Author email was not set, trying to set it to {0}", authorEmail);
+        }
 
-            if (pr != null) {
-                logger.log(Level.INFO, "PR is not null, checking if mergable");
-                checkMergeable(pr);
-                try {
-                    for (GHPullRequestCommitDetail commitDetails : pr.listCommits()) {
-                        if (commitDetails.getSha().equals(getHead())) {
-                            commitAuthor = commitDetails.getCommit().getCommitter();
-                            break;
-                        }
+        if (pr != null) {
+            logger.log(Level.INFO, "PR is not null, checking if mergable");
+            checkMergeable(pr);
+            try {
+                for (GHPullRequestCommitDetail commitDetails : pr.listCommits()) {
+                    if (commitDetails.getSha().equals(getHead())) {
+                        commitAuthor = commitDetails.getCommit().getCommitter();
+                        break;
                     }
-                } catch (Exception ex) {
-                    logger.log(Level.INFO, "Unable to get PR commits: ", ex);
                 }
-
+            } catch (Exception ex) {
+                logger.log(Level.INFO, "Unable to get PR commits: ", ex);
             }
 
-            logger.log(Level.INFO, "Running build...");
-            build();
-
-            shouldRun = false;
         }
+
+        logger.log(Level.INFO, "Running build...");
+        build();
+
     }
 
     private void build() {
@@ -182,9 +173,6 @@ public class GhprcPullRequest {
         }
         logger.log(Level.INFO, "New commit. Sha: {0} => {1}", new Object[] { head, sha });
         head = sha;
-        if (accepted) {
-            shouldRun = true;
-        }
         return true;
     }
 

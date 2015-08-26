@@ -290,6 +290,7 @@ public class GhprcRepository {
     }
 
     void onPullRequestHook(PullRequest pr) {
+        logger.log(Level.INFO, "Pull request hook action: {0}", pr.getAction());
         if ("closed".equals(pr.getAction())) {
             pulls.remove(pr.getNumber());
         } else if (helper.isProjectDisabled()) {

@@ -6,7 +6,7 @@ f.entry(field: "gitHubAuthId", title:_("GitHub API credentials")) {
 }
 
 f.entry(field: "useGitHubHooks", title: "Use github hooks for build triggering") {
-  f.checkbox() 
+  f.checkbox(default: true)
 }
 f.advanced() {
   f.entry(field: "autoCloseFailedPullRequests", title: _("Close failed pull request automatically?")) {
@@ -17,9 +17,6 @@ f.advanced() {
   }
   f.entry(field: "cron", title: _("Crontab line"), help: "/descriptor/hudson.triggers.TimerTrigger/help/spec") {
     f.textbox(default: descriptor.cron, checkUrl: "'descriptorByName/hudson.triggers.TimerTrigger/checkSpec?value=' + encodeURIComponent(this.value)") 
-  }
-  f.entry(field: "permitAll", title: "Build every pull request automatically without asking (Dangerous!).") {
-    f.checkbox() 
   }
   f.entry(field: "buildDescTemplate", title: _("Build description template")) {
       f.textarea()

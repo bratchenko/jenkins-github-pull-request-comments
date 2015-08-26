@@ -35,39 +35,6 @@ public class GhprcPullRequestTest {
     private GhprcRepository repo;
 
     @Test
-    public void testConstructorWhenAuthorIsWhitelisted() throws IOException {
-        // GIVEN
-        GHUser ghUser = mock(GHUser.class);
-        GHCommitPointer head = mock(GHCommitPointer.class);
-        GHCommitPointer base = mock(GHCommitPointer.class);
-        given(head.getSha()).willReturn("some sha");
-        given(base.getRef()).willReturn("some ref");
-
-        // Mocks for GHPullRequest
-        given(pr.getNumber()).willReturn(10);
-        given(pr.getUpdatedAt()).willReturn(new Date());
-        given(pr.getTitle()).willReturn("title");
-        given(pr.getHead()).willReturn(head);
-        given(pr.getBase()).willReturn(base);
-        given(pr.getUser()).willReturn(ghUser);
-        given(ghUser.getEmail()).willReturn("email");
-
-        // Mocks for GhprcRepository
-        given(repo.getName()).willReturn("repoName");
-
-        // WHEN
-        GhprcPullRequest ghprcPullRequest = new GhprcPullRequest(pr, helper, repo);
-
-        // THEN
-        assertThat(ghprcPullRequest.getId()).isEqualTo(10);
-        assertThat(ghprcPullRequest.getAuthorEmail()).isEqualTo("email");
-        assertThat(ghprcPullRequest.getHead()).isEqualTo("some sha");
-        assertThat(ghprcPullRequest.getTitle()).isEqualTo("title");
-        assertThat(ghprcPullRequest.getTarget()).isEqualTo("some ref");
-        assertThat(ghprcPullRequest.isMergeable()).isFalse();
-    }
-
-    @Test
     public void testInitRepoNameNull() throws IOException {
         // GIVEN
         GHUser ghUser = mock(GHUser.class);

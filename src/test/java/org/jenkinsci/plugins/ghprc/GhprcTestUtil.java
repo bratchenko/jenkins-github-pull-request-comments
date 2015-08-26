@@ -286,7 +286,6 @@ public class GhprcTestUtil {
         jsonObject.put("username", "user");
         jsonObject.put("password", "1111");
         jsonObject.put("accessToken", "accessToken");
-        jsonObject.put("allowMembersOfWhitelistedOrgsAsAdmin", "false");
         jsonObject.put("publishedURL", "defaultPublishedURL");
         jsonObject.put("cron", "0 0 31 2 0");
         jsonObject.put("logExcerptLines", "0");
