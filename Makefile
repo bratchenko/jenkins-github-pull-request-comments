@@ -1,0 +1,2 @@
+build:
+	mvn -DskipTests package
